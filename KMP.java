@@ -9,11 +9,56 @@ public class KMP {
 	/**
 	 * Perform KMP substring search on the given text with the given pattern.
 	 * 
-	 * This should return the starting index of the first substring match if it
-	 * exists, or -1 if it doesn't.
+	 * @param patternString - The pattern styring to search for.
+	 * @param textString - The text string to search within.
+	 * @return - The starting index of the first substring match if it exists, or -1 if it doesn't.
 	 */
-	public static int search(String pattern, String text) {
-		// TODO fill this in.
+	public static int search(String patternString, String textString) {
+		char[] pattern = patternString.toCharArray(), text = textString.toCharArray();
+		int[] matchTable = generateMatchTable(pattern);
+
+		for (int k = 0, i = 0; k + i < text.length;) {
+			if (pattern[i] == text[k + i]) {
+				if (++i == pattern.length)
+					return k;
+			} else {
+				k = (matchTable[i] == -1) ? k + i + 1 : k + i - matchTable[i];
+				i = (matchTable[i] == -1) ? 0 : matchTable[i];
+			}
+		}
+
 		return -1;
+	}
+
+	/**
+	 * Generates the KMP "partial match" table for the given pattern.
+	 * The partial match table is used to skip characters while matching.
+	 * 
+	 * @param pattern - The character array representing the pattern for which to create the match table.
+	 * @return - The partial match table as an integer array.
+	 */
+	public static int[] generateMatchTable(char[] pattern) {
+		int[] matchTable = new int[pattern.length];
+
+		// Initialize the first two values of the match table
+		matchTable[0] = -1;
+		matchTable[1] = 0;
+
+		// 'j' keeps track of the length of the previous longest prefix suffix
+		int j = 0;
+
+		// 'pos' is the current position in the pattern being processed
+		int pos = 2;
+
+		while (pos < pattern.length) {
+			if (pattern[pos - 1] == pattern[j]) // Characters match, increment 'j' and set the match table at 'pos'
+				matchTable[pos++] = ++j;
+			else if (j > 0) // Characters do not match, fall back in the match table
+				j = matchTable[j];
+			else // No match found, set the match table at 'pos' to 0 and move to the next position
+				matchTable[pos++] = 0;
+		}
+		
+		return matchTable;
 	}
 }
