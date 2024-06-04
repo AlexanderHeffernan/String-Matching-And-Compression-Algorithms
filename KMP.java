@@ -14,19 +14,26 @@ public class KMP {
 	 * @return - The starting index of the first substring match if it exists, or -1 if it doesn't.
 	 */
 	public static int search(String patternString, String textString) {
+		// Convert the pattern and text strings to character arrays
 		char[] pattern = patternString.toCharArray(), text = textString.toCharArray();
 		int[] matchTable = generateMatchTable(pattern);
 
+		// 'k' is the start if the current match in the text
+		// 'i' is the position of the current character in the pattern
 		for (int k = 0, i = 0; k + i < text.length;) {
+			// If characters matchy, increment i'
 			if (pattern[i] == text[k + i]) {
-				if (++i == pattern.length)
-					return k;
-			} else {
-				k = (matchTable[i] == -1) ? k + i + 1 : k + i - matchTable[i];
-				i = (matchTable[i] == -1) ? 0 : matchTable[i];
+				// If the entire pattern is found, return the start index 'k'
+				if (++i == pattern.length) { return k; }
+				continue;
 			}
+
+			// If characters do not match, udpate 'k' and 'i' based on the match table
+			k = (matchTable[i] == -1) ? k + i + 1 : k + i - matchTable[i];
+			i = (matchTable[i] == -1) ? 0 : matchTable[i];
 		}
 
+		// If no match is found, return -1
 		return -1;
 	}
 
