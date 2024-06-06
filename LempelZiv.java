@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class LempelZiv {
-    
     /**
      * Take input as a text string, compress it, and return it as a text string.
      * 

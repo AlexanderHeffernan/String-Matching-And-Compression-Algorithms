@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class BoyerMoore {
-
 	/**
 	 * Preprocesses the pattern for the bad character rule in the Boyer-Moore algorithm.
 	 * 
