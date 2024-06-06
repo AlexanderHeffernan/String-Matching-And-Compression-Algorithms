@@ -1,9 +1,3 @@
-/**
- * A new KMP instance is created for every substring search performed. Both the
- * pattern and the text are passed to the constructor and the search method. You
- * could, for example, use the constructor to create the match table and the
- * search method to perform the search itself.
- */
 public class KMP {
 
 	/**
